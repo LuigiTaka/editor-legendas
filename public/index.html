@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editor de Legendas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Work Sans", sans-serif;
+            font-weight: 400;
+            height: 100vh;
+        }
+
+
+        p, label {
+
+            font-size: 1.4rem;
+        }
+
+        h3 {
+            font-size: 1.6rem;
+        }
+
+        #wrapper, #wrapper > div {
+            height: 100%;
+        }
+
+        #icon-file-format{
+            height: 75%;
+            width: 50%
+        }
+
+        #file-drop-area{
+
+            /* Border */
+            border: 0.25rem dashed #d1d5db;
+            border-radius: 0.25rem;
+        }
+
+    </style>
+
+
+</head>
+
+
+<body>
+
+<div class="container mt-2" id="wrapper">
+    <div style="height: unset">
+        <h1>Editor de Legendas</h1>
+        <span>Projeto pessoal para edição de arquivos <code>.srt</code> </span>
+    </div>
+
+    <div class="row">
+
+        <div class="col col-sm-12 col-md-5 d-flex flex-column justify-content-center" id="text-column">
+            <!-- Aumentar espaçamento entre o título e o texto -->
+            <div>
+                <p> Ferramenta para editar arquivos <code>.srt</code>. </p>
+                <p>Permite editar o texto e alterar as durações das legendas.</p>
+                <p>Selecione um arquivo e começe a editar.</p>
+            </div>
+        </div>
+
+        <div class="col col-sm-12 col-md justify-content-center d-flex flex-column">
+            <div id="file-drop-area" class="d-flex flex-column text-center justify-content-center align-content-center" style="height: 50%">
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                    <span id="file-drop-status" class="mb-2"> Largue o arquivo <code>.srt</code> aqui </span>
+                    <img id="icon-file-format" class="text-center" src="/assets/srt.png" alt="ícone do arquivo .srt a ser inserido">
+                </div>
+            </div>
+
+            <div class="hide" hidden>
+                <form method="post" enctype="multipart/form-data" id="arquivo" action="/public/import_subtitle.php">
+                    <div class="form-group text-center">
+                        <label for="arquivo-legenda">Arquivo</label>
+                        <input type="file" id="arquivo-legenda" prefix=".srt" name="arquivo" class="form-control">
+                        <div class="btn-group d-flex justify-content-end">
+                            <input type="reset" form="arquivo" value="Limpar" class="btn btn-outline-danger">
+                            <button id="submit" class="btn btn-outline-success" name="enviar" type="submit" form="arquivo">Enviar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script defer>
+
+    function updateThumbnail(element,file){
+        console.info(element);
+        console.log(file);
+        element.innerText = "Arquivo inserido: " + file.name;
+    }
+
+    const $dropArea = document.getElementById("file-drop-area");
+    const $fileInput = document.getElementById("arquivo-legenda");
+    const $fileDropStatus = document.getElementById("file-drop-status");
+    const $submitButton = document.getElementById("submit");
+
+    console.log($dropArea);
+
+    $dropArea.addEventListener("click",(e) => {
+        console.info("click");
+        $fileInput.click();
+    })
+
+    $dropArea.addEventListener("dragover",(e) => {
+        e.preventDefault();
+        console.info('dragover');
+        return false;
+    });
+
+    $dropArea.addEventListener("drop",(e) => {
+        console.info("drop");
+        e.preventDefault();
+        if (e.dataTransfer.files.length) {
+            $fileInput.files = e.dataTransfer.files;
+            updateThumbnail($fileDropStatus, e.dataTransfer.files[0]);
+            $submitButton.click();
+        }
+
+        return false;
+    });
+
+    ["dragleave", "dragend"].forEach((type) => {
+        $dropArea.addEventListener(type, (e) => {
+            console.info(type);
+            //dropZoneElement.classList.remove("drop-zone--over");
+        });
+    });
+
+    $fileInput.addEventListener('change',(e) => {
+        console.info("change")
+        updateThumbnail( $fileDropStatus,$fileInput.files[0] );
+        $submitButton.click();
+        //update thumbnail
+    })
+
+
+</script>
+
+
+</body>
+</html>
