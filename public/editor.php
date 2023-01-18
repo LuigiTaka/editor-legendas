@@ -133,7 +133,7 @@ if (isset($_FILES['arquivo']) && isset($_POST['enviar'])) {
 
             <div class="legendas col col-sm-12 col-md-4">
                 <div class="d-flex flex-row-reverse align-items-end mb-2">
-                    <form action="/api/download_file.php" method="post" id="download_form">
+                    <form action="/api/download.php" method="post" id="download_form">
                         <div class="btn-group mb-2" role="group" aria-label="Ações das legendas">
                             <button class="btn btn-light"
                                     id="download"
