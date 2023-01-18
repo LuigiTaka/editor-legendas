@@ -69,13 +69,20 @@ class LegendaDTO
         }
 
         $intervaloOnMiliseconds = array_sum($partsInMillieseconds);
+        if ($intervaloOnMiliseconds === 0){
+            return $intervalo;
+        }
+
         $intervaloOnMiliseconds += $ms;
 
         $intervaloNovo = [ ];
         foreach ($fatoresMilisegundos as $unidade => $valor){
              $intervaloNovo[$unidade] = floor(round($intervaloOnMiliseconds/$valor,2));
              $intervaloOnMiliseconds -= ($intervaloNovo[$unidade] * $valor);
-             $intervaloNovo[$unidade] = (string)$intervaloNovo[$unidade];
+
+             $novoIntervaloTmp = $intervaloNovo[$unidade];
+             $novoIntervaloTmp = ($novoIntervaloTmp <= 0)?0:$novoIntervaloTmp;
+             $intervaloNovo[$unidade] = $novoIntervaloTmp;
         }
         $msNovo = str_pad((string)$intervaloNovo['ms'],3,"0",STR_PAD_LEFT);
         unset($intervaloNovo['ms']);
