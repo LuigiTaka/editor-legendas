@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 class LegendaDTOTest extends TestCase
 {
 
-
     /**
      * @test
      * @dataProvider  validLegendaDataProvider
@@ -49,6 +48,20 @@ class LegendaDTOTest extends TestCase
                 "legenda aqui",
                 ["00:05:04,011","00:05:05,929"],
                 2000
+            ],
+            [
+                1,
+                ["00:00:00,000","00:00:00,600"],
+                "legenda aqui",
+                ["00:00:00,000","00:00:00,450"],
+                -300
+            ],
+            [
+                1,
+                ["00:00:00,300","00:00:00,300"],
+                "legenda aqui",
+                ["00:00:00,150","00:00:00,150"],
+                -300
             ],
         ];
     }
